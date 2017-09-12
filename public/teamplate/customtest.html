@@ -1,0 +1,77 @@
+<style>
+    input[type=text], textarea {
+        border-style: inset;
+        border-width: 2px;
+    }
+</style>
+<div class="section section-basic" ng-controller="CustomTestCtrl">
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 ">
+                <p class="category">Yor code </p>
+                <textarea class="form-control" placeholder="Here can be your nice code" rows="20"></textarea>
+
+                </textarea>
+            </div>
+
+            <div class="col-md-6">
+                <p class="category">Yor input </p>
+                <textarea class="form-control" placeholder="" rows="8"></textarea>
+
+                </textarea>
+
+                <p class="category">Yor output </p>
+                <textarea class="form-control " placeholder="" rows="10"></textarea>
+
+                </textarea>
+
+            </div>
+        </div>
+
+        <div class="row justify-content-center">
+            <button class="btn btn-info">Submit</button>
+            <button class="btn btn-success">Save</button>
+        </div>
+
+        <div class="row justify-content-center">
+            <div class="col-md-12">
+                <p class="category">List code</p>
+
+                <table class="table table-hover table-border">
+
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Time</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <tr>
+                            <td>001</td>
+                            <td>Code 01</td>
+                            <td>12:00</td>
+                        </tr>
+                    </tbody>
+
+                </table>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <ul class="pagination pagination-info pull-right">
+                    <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                    <li class="page-item"><a class="page-link" href="#">2</a></li>
+                    <li class="page-item"><a class="page-link" href="#">3</a></li>
+                    <li class="page-item"><a class="page-link" href="#">4</a></li>
+                    <li class="page-item"><a class="page-link" href="#">5</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+
