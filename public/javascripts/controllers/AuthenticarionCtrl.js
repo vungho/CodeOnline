@@ -1,4 +1,4 @@
-CodeOnlineApp.controller('AuthenticationCtrl', function ($scope) {
+CodeOnlineApp.controller('AuthenticationCtrl', function ($scope, AuthenticationService) {
     $scope.user = new User('', '', '', '');
 
     function User(useName, email, password, rePassword) {
