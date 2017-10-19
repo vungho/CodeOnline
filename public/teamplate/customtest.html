@@ -1,3 +1,8 @@
+<style>
+    .code-border {
+        border: solid aqua 1px;
+    }
+</style>
 
 <div class="section section-basic" ng-controller="CustomTestCtrl">
 
@@ -5,21 +10,34 @@
         <div class="row">
             <div class="col-md-6 ">
                 <p class="category">Yor code </p>
-                <textarea class="form-control" placeholder="Here can be your nice code" rows="20"></textarea>
 
-                </textarea>
+                <div class="code-border">
+                    <textarea class="form-control"
+                              placeholder="Here can be your nice code"
+                              rows="20">
+
+                    </textarea>
+                </div>
             </div>
 
             <div class="col-md-6">
-                <p class="category">Yor input </p>
-                <textarea class="form-control" placeholder="" rows="8"></textarea>
+                <p class="category">Your input </p>
+                <div class="code-border">
+                    <textarea class="form-control"
+                              placeholder="Input..."
+                              rows="8">
 
-                </textarea>
+                    </textarea>
+                </div>
 
                 <p class="category">Yor output </p>
-                <textarea class="form-control " placeholder="" rows="10"></textarea>
+                <div class="code-border">
+                    <textarea class="form-control "
+                              placeholder="Output..."
+                              rows="10"></textarea>
 
-                </textarea>
+                    </textarea>
+                </div>
 
             </div>
         </div>
@@ -55,8 +73,8 @@
             </div>
         </div>
 
-        <div class="row">
-            <div class="col-md-12">
+        <div class="row pull-right">
+            <div class="col-md-12 pull-right">
                 <ul class="pagination pagination-info pull-right">
                     <li class="page-item active"><a class="page-link" href="#">1</a></li>
                     <li class="page-item"><a class="page-link" href="#">2</a></li>

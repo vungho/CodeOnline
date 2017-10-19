@@ -1,0 +1,92 @@
+<div ng-controller="AuthenticationCtrl" class="col-md-6 col-lg-6 col-xl-4 ml-auto mr-auto" style="padding-top: 50px">
+    <div class="card">
+        <ul class="nav nav-tabs nav-tabs-neutral justify-content-center" role="tablist" data-background-color="blue">
+            <li class="nav-item">
+                <a class="nav-link active" data-toggle="tab" href="#login" role="tab">Login</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" href="#signup" role="tab">Sign up</a>
+            </li>
+        </ul>
+        <div class="card-body">
+            <!-- Tab panes -->
+            <div class="tab-content text-center">
+                <div class="tab-pane active" id="login" role="tabpanel">
+                    <div class="input-group form-group-no-border">
+                        <span class="input-group-addon">
+                            <i class="now-ui-icons users_circle-08"></i>
+                        </span>
+                        <input class="form-control" placeholder="User Name..." type="text">
+                    </div>
+
+                    <div class="input-group form-group-no-border">
+                        <span class="input-group-addon">
+                            <i class="now-ui-icons objects_key-25"></i>
+                        </span>
+                        <input class="form-control" placeholder="Password.." type="password">
+                    </div>
+
+                    <div class="col text-center">
+                        <button class="btn btn-round btn-info btn-lg"
+                           target="_blank">
+                            Submit
+                        </button>
+                        <button class="btn btn-round btn-white btn-lg"
+                                target="_blank"
+                                onclick="hideAuthenticationDialog()">
+                            Cancel
+                        </button>
+                    </div>
+                </div>
+
+
+                <div class="tab-pane" id="signup" role="tabpanel">
+
+                    <div class="input-group form-group-no-border">
+                        <span class="input-group-addon">
+                            <i class="now-ui-icons users_circle-08"></i>
+                        </span>
+                        <input class="form-control" placeholder="User Name..." type="text">
+                    </div>
+
+                    <div class="input-group form-group-no-border">
+                        <span class="input-group-addon">
+                            <i class="now-ui-icons ui-1_email-85"></i>
+                        </span>
+                        <input class="form-control" placeholder="Email..." type="email">
+                    </div>
+
+                    <div class="input-group form-group-no-border">
+                        <span class="input-group-addon">
+                            <i class="now-ui-icons objects_key-25"></i>
+                        </span>
+                        <input class="form-control" placeholder="Password.." type="password">
+                    </div>
+
+                    <div class="input-group form-group-no-border">
+                        <span class="input-group-addon">
+                            <i class="now-ui-icons objects_key-25"></i>
+                        </span>
+                        <input class="form-control" placeholder="Re-password.." type="password">
+                    </div>
+
+
+
+                    <div class="col text-center">
+                        <button class="btn btn-round btn-info btn-lg"
+                                target="_blank">
+                            Register
+                        </button>
+                        <button class="btn btn-round btn-white btn-lg"
+                                target="_blank"
+                                onclick="hideAuthenticationDialog()">
+                            Cancel
+                        </button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End Tabs on plain Card -->
+</div>
