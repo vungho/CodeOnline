@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title><%= title %></title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <title>Ho Quoc Vung</title>
+    <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no' name='viewport' />
+    <!--     Fonts and icons     -->
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700,200" rel="stylesheet" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" />
+
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <link rel='stylesheet' href='node_modules/now-ui-kit-v1.1.0/assets/css/bootstrap.min.css' />
+    <link rel='stylesheet' href='node_modules/now-ui-kit-v1.1.0/assets/css/now-ui-kit.css' />
+    <script src="node_modules/angular/angular.min.js"></script>
+    <script src="node_modules/angular-route/angular-route.min.js"></script>
+
+</head>
+
+
+<body class="sidebar-collapse" ng-app="CodeOnlineApp">
+
+<div class="authentication-face" id="authentication-dialog" ng-controller="AuthenticationCtrl">
+    <authentication></authentication>
+</div>
+
+
+<nav class="navbar navbar-expand-lg fixed-top bg-info">
+    <div class="container">
+        <div class="navbar-translate">
+            <a class="navbar-brand" href="#">
+                Code online
+            </a>
+            <button class="navbar-toggler navbar-toggler-right"
+                    type="button" data-toggle="collapse" data-target="#navigation"
+                    aria-controls="navigation-index" aria-expanded="false"
+                    aria-label="Toggle navigation">
+                <span class="navbar-toggler-bar bar1"></span>
+                <span class="navbar-toggler-bar bar2"></span>
+                <span class="navbar-toggler-bar bar3"></span>
+            </button>
+        </div>
+
+        <div class="collapse navbar-collapse justify-content-end" id="navigation">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="#!customtest">
+                        <i class="now-ui-icons loader_gear"></i>
+                        <p>Custom test</p>
+                    </a>
+                </li>
+               
+                <li class="nav-item">
+                    <a class="nav-link" href="#" onclick="openAuthenticationDialog()">
+                        <i class="now-ui-icons users_single-02"></i>
+                        <p>Account</p>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div class="wrapper">
+    <div class="main">
+        <ng-view></ng-view>
+    </div>
+</div>
+</body>
+
+<!-- Angular app -->
+<script src="javascripts/app/CodeOnlineApp.js"></script>
+<script src="javascripts/route/CodeOnlineAppRoute.js"></script>
+
+<!-- Angular customer service -->
+<script src="javascripts/service/AuthenticationService.js"></script>
+<script src="javascripts/service/ColumnService.js"></script>
+
+<!-- Angular controller -->
+<script src="javascripts/controllers/AuthenticarionCtrl.js"></script>
+<script src="javascripts/controllers/CustomTestCtrl.js"></script>
+
+<script src="node_modules/now-ui-kit-v1.1.0/assets/js/core/jquery.3.2.1.min.js"></script>
+<script src="node_modules/now-ui-kit-v1.1.0/assets/js/core/popper.min.js"></script>
+<script src="node_modules/now-ui-kit-v1.1.0/assets/js/core/bootstrap.min.js"></script>
+<script src="node_modules/now-ui-kit-v1.1.0/assets/js/now-ui-kit.js"></script>
+
+<script>
+
+    function openAuthenticationDialog() {
+        console.log('Click!')
+        $('#authentication-dialog').show();
+    }
+
+    function hideAuthenticationDialog() {
+        $('#authentication-dialog').hide();
+    }
+</script>
+</html>

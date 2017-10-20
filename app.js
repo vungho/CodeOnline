@@ -4,13 +4,10 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-var session = required('express-session');
-var passport = required('passport');
 
-var index = require('./routes/index');
-var users = require('./routes/users');
-var api  =require('./routes/api')
-
+var member = require('./routes/member');
+var guest = require('./routes/guest');
+var api = require('./routes/api');
 var app = express();
 
 // view engine setup
@@ -26,17 +23,10 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/node_modules', express.static(path.join(__dirname, 'node_modules')));
 
-//Authentication require
-app.use(session ({
-    secret : "secret",
-    saveUninitialized: true,
-    resave: true
-}));
-app.use(passport.initialize());
-app.use(passport.session);
 
-app.use('/', index);
-app.use('/users', users);
+app.use('/', guest);
+app.use('/guest', guest);
+app.use('/member', member);
 app.use('/api', api);
 
 // catch 404 and forward to error handler
