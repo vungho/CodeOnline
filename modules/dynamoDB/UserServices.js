@@ -6,7 +6,7 @@ var AWS = require("aws-sdk");
 var DBConfig = require("./DBConfig");
 
 /**
- * Create New User, if openIdType is not "Google" or "Facebook" user password will undefine
+ * Create New User, if openIdType is not "Google" or "Facebook" user password will undefined
  * @param user : User information
  * @param callBack
  */

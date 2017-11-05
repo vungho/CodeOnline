@@ -8,10 +8,10 @@ CodeOnlineApp.directive('authentication', function () {
 CodeOnlineApp.config(function ($routeProvider) {
     $routeProvider
         .when('/', {
-            templateUrl: 'teamplate/customtest.html'
+            templateUrl: 'teamplate/customtest_guest.html'
         })
         .when('/customtest', {
-            templateUrl: 'teamplate/customtest.html'
+            templateUrl: 'teamplate/customtest_guest.html'
         })
         .when('/contests', {
             templateUrl: 'teamplate/contests.html'

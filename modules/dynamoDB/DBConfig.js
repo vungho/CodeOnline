@@ -1,8 +1,8 @@
 module.exports = {
     AwsConfig: {
-        accessKeyId: "",
-        secretAccessKey: "",
-        region: ""
+        accessKeyId: "AKIAJ6RO2NARXEDXWSUQ",
+        secretAccessKey: "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",
+        region: "us-east-2"
     },
     OpenIdType: {
         Google: "Google",
