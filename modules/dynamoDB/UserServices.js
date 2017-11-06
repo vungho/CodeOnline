@@ -40,7 +40,8 @@ exports.getUserDetails = function (userName, openIdType, callBack) {
             [sortKey] : {
                 [DBConfig.Tables.User.Columns.OpenIdType.Type] : openIdType
             }
-        }
+        },
+        TableName: DBConfig.Tables.User.Name
     };
     dynamoDb.getItem(params,callBack(error, data));
 };
@@ -66,4 +67,10 @@ exports.isExistedUser = function (userName, openIdType, callBack) {
  */
 exports.getAllUser = function (callBack) {
     
+};
+
+exports.getUserPasswordByUserName = function (userName, callBack) {
+    this.getUserDetails(userName, DBConfig.OpenIdType.OnlineCodeSystem, function (error,data) {
+        callBack(error, data.Item.Password);
+    });
 };
