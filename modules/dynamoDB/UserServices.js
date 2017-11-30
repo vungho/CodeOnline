@@ -33,6 +33,7 @@ exports.getUserDetails = function (userName, openIdType, callBack) {
     var partitionKey = DBConfig.Tables.User.KeySchema.PartitionKey.ColumnName;
     var sortKey = DBConfig.Tables.User.KeySchema.SortKey.ColumnName;
     var params = {
+        TableName:DBConfig.Tables.User.Name,
         Key: {
             [partitionKey]: {
                 [DBConfig.Tables.User.Columns.UserName.Type]: userName
@@ -42,7 +43,9 @@ exports.getUserDetails = function (userName, openIdType, callBack) {
             }
         }
     };
-    dynamoDb.getItem(params,callBack(error, data));
+    dynamoDb.getItem(params,function (error, data) {
+        callBack(error,data);
+    });
 };
 
 /**

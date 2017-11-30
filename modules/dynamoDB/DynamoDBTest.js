@@ -1,4 +1,11 @@
-var dynamoDB = require("./DynamoDB");
-var DBConfig = require("./DBConfig");
 
-console.log(JSON.stringify(DBConfig.Tables))
+var DBConfig = require("./DBConfig");
+var userServices = require("./UserServices")
+
+var  idType = "null";
+userServices.getUserDetails("binh",idType,function (error, data) {
+    console.log(JSON.stringify(data));
+});
+
+
+
