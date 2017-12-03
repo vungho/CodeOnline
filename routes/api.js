@@ -6,14 +6,20 @@ router.get('/', (req, res)=>{
     res.json({'mess': 'welcome api'});
 });
 
-//Dành cho đang nhập
-router.post('/login', (req, res)=>{
-    // --> code ở đây
-});
-
-//Dành cho đăng ký
-router.post('/register', (req, res)=>{
-    //-- > Code ở đây
+router.post('/register', (req, res) => {
+    let user = req.data;
+    userService.isExistedUser(user.userName, user.openIdType, function (data){
+        if (data === true){
+            res.json({result: {error: 'User is exit'}});
+        }else{
+            userService.createNewUser(user, function (err, data) {
+                if (err){
+                    res.json({result: {error: 'Fail'}});
+                }
+                res.json(data);
+            });
+        }
+    })
 });
 
 module.exports = router;

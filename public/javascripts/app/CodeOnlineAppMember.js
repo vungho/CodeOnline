@@ -1,0 +1,1 @@
+let CodeOnlineApp = angular.module('CodeOnlineApp', ['ngRoute']);
