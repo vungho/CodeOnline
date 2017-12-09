@@ -68,5 +68,22 @@ exports.isExistedUser = function (userName, openIdType, callBack) {
  * @param callBack
  */
 exports.getAllUser = function (callBack) {
-    
+    AWS.config.update(DBConfig.AwsConfig);
+    var document = new AWS.DynamoDB.DocumentClient();
+    var params = {
+        ExpressionAttributeNames:{
+            '#u_UserName':'UserName',
+            '#u_OpenIdType':'OpenIdType',
+            '#u_Password':'Password',
+            '#u_Email':'Email',
+            '#u_DateCreated':'DateCreated',
+            '#u_LastLg':'LastLoginDate'
+        },
+        FilterExpression:"attribute_exists(#u_UserName)",
+        ProjectionExpression:"#u_UserName, #u_OpenIdType, #u_Password, #u_Email, #u_DateCreated, #u_LastLg",
+        TableName: DBConfig.Tables.User.Name
+    };
+    document.scan(params,function (error, data) {
+       callBack(error,data);
+    });
 };
