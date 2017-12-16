@@ -18,7 +18,12 @@ exports.createNewUser = function (user, callBack) {
         TableName: DBConfig.Tables.User.Name,
         Item: user
     };
-    docClient.put(params, callBack(error, data));
+    docClient.put(params, function(err, data){
+        if (err)
+            callBack({error: err});
+        else
+            callBack(data);
+    });
 };
 
 /**
@@ -55,7 +60,7 @@ exports.getUserDetails = function (userName, openIdType, callBack) {
  * @param callBack true if user is existed and false if not
  */
 exports.isExistedUser = function (userName, openIdType, callBack) {
-    this.getUserDetails(userName,openIdType,function (error,data) {
+    this.getUserDetails(userName, openIdType, function (error,data) {
        if(data!=null){
            callBack(true);
        }else
