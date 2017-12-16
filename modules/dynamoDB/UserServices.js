@@ -49,7 +49,7 @@ exports.getUserDetails = function (userName, openIdType, callBack) {
         }
     };
     dynamoDb.getItem(params,function (error, data) {
-        callBack(error,data);
+        callBack(error, data);
     });
 };
 
@@ -60,7 +60,7 @@ exports.getUserDetails = function (userName, openIdType, callBack) {
  * @param callBack true if user is existed and false if not
  */
 exports.isExistedUser = function (userName, openIdType, callBack) {
-    this.getUserDetails(userName, openIdType, function (error,data) {
+    this.getUserDetails(userName, openIdType, function (error, data) {
        if(data!=null){
            callBack(true);
        }else

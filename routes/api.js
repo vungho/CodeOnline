@@ -9,7 +9,7 @@ router.get('/', (req, res)=>{
 
 router.post('/register', (req, res) => {
     let user = req.body;
-    userService.isExistedUser(user.userName, user.openIdType, function (data){
+    userService.isExistedUser(user.UserName, user.OpenIdType, function (data){
         if (data === true){
             res.json({result: {error: 'User is exit'}});
         }else{
@@ -25,6 +25,16 @@ router.post('/register', (req, res) => {
 
 router.post('/login', (req, res) => {
     //login
+    let user = req.body;
+    userService.getUserDetails(user.UserName, user.OpenIdType, function (error, data) {
+        if (error){
+            console.log(error)
+            res.json({result: {error: 'User is not exit'}});
+        }else{
+            console.log(data);
+            res.json(data);
+        }
+    })
 });
 
 module.exports = router;

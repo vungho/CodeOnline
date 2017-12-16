@@ -63,5 +63,6 @@ CodeOnlineApp.controller('AuthenticationCtrl', function ($scope, $http, Authenti
     function Member(userName, password) {
         this.UserName = userName;
         this.Password = password;
+        this.OpenIdType = 'None'
     }
 });
