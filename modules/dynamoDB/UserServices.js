@@ -19,6 +19,8 @@ exports.createNewUser = function (user, callBack) {
         Item: user
     };
     docClient.put(params, function(err, data){
+        console.log(err);
+        console.log(data);
         if (err)
             callBack({error: err});
         else
@@ -48,6 +50,7 @@ exports.getUserDetails = function (userName, openIdType, callBack) {
             }
         }
     };
+
     dynamoDb.getItem(params,function (error, data) {
         callBack(error, data);
     });
@@ -61,7 +64,7 @@ exports.getUserDetails = function (userName, openIdType, callBack) {
  */
 exports.isExistedUser = function (userName, openIdType, callBack) {
     this.getUserDetails(userName, openIdType, function (error, data) {
-       if(data!=null){
+       if(error !== null){
            callBack(true);
        }else
            callBack(false);

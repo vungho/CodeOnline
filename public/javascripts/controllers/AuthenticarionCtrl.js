@@ -6,18 +6,15 @@ CodeOnlineApp.controller('AuthenticationCtrl', function ($scope, $http, Authenti
     $scope.register = register;
 
     function login() {
-
         $http({
             method: 'post',
             url: '/api/login',
             data: $scope.member
         }).then(
             function (response) {
-                alert('Thanh công');
                 console.log(response)
             },
             function (error) {
-                alert('Thất bại');
                 console.log(error);
             }
         );
