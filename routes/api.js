@@ -19,6 +19,10 @@ router.post('/codecompiling', (req, res) => {
     })
 });
 
+router.get('/usercode/:userName/:limit/:offset', (req, res) => {
+    res.json({wee: ':(('});
+});
+
 router.post('/register', (req, res) => {
     let user = req.body;
     userService.isExistedUser(user.UserName, user.OpenIdType, function (data){
