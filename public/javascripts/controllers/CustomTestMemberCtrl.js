@@ -4,6 +4,7 @@ CodeOnlineApp.controller('CustomTestCtrl', function ($scope, $http, $localStorag
     $scope.user = null;
     $scope.codePagination = [1, 2, 3, 4, 5];
     $scope.paginnationAC = 1;
+    $scope.listSourceCode = [];
     init();
     
     function init() {
@@ -20,12 +21,31 @@ CodeOnlineApp.controller('CustomTestCtrl', function ($scope, $http, $localStorag
                 function (response) {
                     $scope.user = response.data;
                     delete $scope.user.Password;
+                    //getListSourceCode();
                 },
                 function (error) {
                     $scope.user = null;
                 }
             )
         }
+    }
+
+    function getListSourceCode(){
+        $http({
+            method: 'get',
+            url: '/api/usercode',
+            data: {
+                limit: 10,
+                startKey: null
+            }
+        }).then(
+            function (response) {
+                console.log(response)
+            },
+            function (error) {
+                console.log(error)
+            }
+        )
     }
 
     // ----> Authentication redirect
@@ -55,8 +75,27 @@ CodeOnlineApp.controller('CustomTestCtrl', function ($scope, $http, $localStorag
         }
     }
     
-    function saveCode() {
-        
+    function saveCode(fileName) {
+        console.log(fileName);
+        console.log($scope.user);
+        $('#modal-saveCode').modal('hide');
+        $scope.fileName = '';
+
+
+        let code = new SourceCode(null, fileName, $scope.iCode, 'C/C++');
+        console.log(code)
+        $http({
+            method: 'post',
+            url: '/api/savecode',
+            data: code
+        }).then(
+            function (response) {
+                console.log(response)
+            },
+            function (error) {
+                console.log(error)
+            }
+        )
     }
     
     function codePaginationChange(pa, instance) {
@@ -88,5 +127,14 @@ CodeOnlineApp.controller('CustomTestCtrl', function ($scope, $http, $localStorag
     function Code(source, input) {
         this.sourceCode = source;
         this.inputs = input
+    }
+    
+    function SourceCode(UserName, FileName, Content, Language) {
+        this.UserName = UserName;
+        this.FileName = FileName;
+        this.Language = Language;
+        this.Content = Content;
+        this.DateCreated = Date.now().toString();
+        this.LastUpdated = Date.now().toString();
     }
 });
