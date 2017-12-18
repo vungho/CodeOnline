@@ -13,7 +13,9 @@
   <link rel='stylesheet' href='node_modules/now-ui-kit-v1.1.0/assets/css/now-ui-kit.css' />
   <script src="node_modules/angular/angular.min.js"></script>
   <script src="node_modules/angular-route/angular-route.min.js"></script>
-
+  <script src="node_modules/angular-ui-bootstrap/dist/ui-bootstrap.js"></script>
+  <script src="node_modules/angular-ui-bootstrap/dist/ui-bootstrap-tpls.js"></script>
+  <script src="node_modules/ngstorage/ngStorage.js"></script>
 </head>
 
 
@@ -67,10 +69,10 @@
           </a>
         </li>
 
-        <li class="nav-item">
-          <a class="nav-link" href="#" onclick="openAuthenticationDialog()">
-            <i class="now-ui-icons users_single-02"></i>
-            <p>Account</p>
+        <li class="nav-item" ng-controller="LogoutCtrl">
+          <a class="nav-link" href="#" ng-click="logout()">
+            <i class="now-ui-icons media-1_button-power"></i>
+            <p>Logout</p>
           </a>
         </li>
       </ul>
@@ -86,8 +88,8 @@
 </body>
 
 <!-- Angular app -->
-<script src="javascripts/app/CodeOnlineAppMember.js"></script>
-<script src="javascripts/route/CodeOnlineAppRouteMember.js"></script>
+<script src="javascripts/app/CodeOnlineApp.js"></script>
+<script src="javascripts/route/CodeOnlineMemberAppRoute.js"></script>
 
 <!-- Angular customer service -->
 <script src="javascripts/service/AuthenticationService.js"></script>
@@ -96,6 +98,7 @@
 <!-- Angular controller -->
 <script src="javascripts/controllers/AuthenticarionCtrl.js"></script>
 <script src="javascripts/controllers/CustomTestMemberCtrl.js"></script>
+<script src="javascripts/controllers/LogoutCtrl.js"></script>
 
 <script src="node_modules/now-ui-kit-v1.1.0/assets/js/core/jquery.3.2.1.min.js"></script>
 <script src="node_modules/now-ui-kit-v1.1.0/assets/js/core/popper.min.js"></script>

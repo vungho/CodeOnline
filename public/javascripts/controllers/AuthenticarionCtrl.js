@@ -1,4 +1,4 @@
-CodeOnlineApp.controller('AuthenticationCtrl', function ($scope, $http, AuthenticationService) {
+CodeOnlineApp.controller('AuthenticationCtrl', function ($scope, $http, AuthenticationService, $localStorage) {
     $scope.newUser = new User('', '', '', '');
     $scope.member = new Member('', '');
 
@@ -12,15 +12,16 @@ CodeOnlineApp.controller('AuthenticationCtrl', function ($scope, $http, Authenti
             data: $scope.member
         }).then(
             function (response) {
-                alert('Thanh công');
-                console.log(response)
+                $localStorage.currentUser = response.data;
+                window.location = '/member';
             },
             function (error) {
-                alert('Thất bại');
                 console.log(error);
             }
         );
     }
+    
+
 
     function register() {
         $http({
@@ -29,27 +30,37 @@ CodeOnlineApp.controller('AuthenticationCtrl', function ($scope, $http, Authenti
             data: $scope.newUser
         }).then(
             function (response) {
-                alert('Thanh công');
+
                 console.log(response)
+                swal({
+                    title: "Thành công!",
+                    text: "Tạo tài khoản thành công, vui lòng đăng nhập để sự dụng các tính năng!",
+                    type: "success"
+                });
+
             },
             function (error) {
-                alert('Thất bại');
+                swal({
+                    title: "Thất bại!",
+                    text: "Tạo tài khoản thất  bại, vui lòng kiểm tra lại các thông tin!",
+                    type: "error"
+                });
                 console.log(error);
             }
         );
     }
-
-
-
+    
     function User(userName, email, password, rePassword) {
-        this.userName = userName;
-        this.email = email;
-        this.password = password;
-        this.rePassword =rePassword;
+        this.UserName = userName;
+        this.Email = email;
+        this.Password = password;
+        this.RePassword =rePassword;
+        this.OpenIdType = 'None'
     }
 
     function Member(userName, password) {
-        this.userName = userName;
-        this.password = password;
+        this.UserName = userName;
+        this.Password = password;
+        this.OpenIdType = 'None'
     }
 });

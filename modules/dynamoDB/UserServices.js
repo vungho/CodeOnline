@@ -18,8 +18,13 @@ exports.createNewUser = function (user, callBack) {
         TableName: DBConfig.Tables.User.Name,
         Item: user
     };
-    docClient.put(params,function (error,data){
-        callBack(error,data);
+    docClient.put(params, function(err, data){
+        console.log(err);
+        console.log(data);
+        if (err)
+            callBack({error: err});
+        else
+            callBack(data);
     });
 };
 
@@ -45,8 +50,9 @@ exports.getUserDetails = function (userName, openIdType, callBack) {
             }
         }
     };
+
     dynamoDb.getItem(params,function (error, data) {
-        callBack(error,data);
+        callBack(error, data);
     });
 };
 
@@ -57,8 +63,8 @@ exports.getUserDetails = function (userName, openIdType, callBack) {
  * @param callBack true if user is existed and false if not
  */
 exports.isExistedUser = function (userName, openIdType, callBack) {
-    this.getUserDetails(userName,openIdType,function (error,data) {
-       if(data!=null){
+    this.getUserDetails(userName, openIdType, function (error, data) {
+       if(error !== null){
            callBack(true);
        }else
            callBack(false);

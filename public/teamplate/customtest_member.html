@@ -7,8 +7,8 @@
                 <div class="code-border">
                     <textarea class="form-control"
                               placeholder="Here can be your nice code"
-                              rows="20">
-
+                              rows="20"
+                              ng-model="iCode.sourceCode">
                     </textarea>
                 </div>
             </div>
@@ -18,8 +18,8 @@
                 <div class="code-border">
                     <textarea class="form-control"
                               placeholder="Input..."
-                              rows="8">
-
+                              rows="8"
+                              ng-model="iCode.inputs">
                     </textarea>
                 </div>
 
@@ -27,8 +27,8 @@
                 <div class="code-border">
                     <textarea class="form-control "
                               placeholder="Output..."
-                              rows="10"></textarea>
-
+                              rows="10"
+                              ng-model="iCodeOutput"></textarea>
                     </textarea>
                 </div>
 
@@ -36,7 +36,7 @@
         </div>
 
         <div class="row justify-content-center">
-            <button class="btn btn-info">Submit</button>
+            <button class="btn btn-info" ng-click="codeCompiling()">Submit</button>
             <button class="btn btn-success">Save</button>
         </div>
 
@@ -69,11 +69,11 @@
         <div class="row pull-right">
             <div class="col-md-12 pull-right">
                 <ul class="pagination pagination-info pull-right">
-                    <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                    <li class="page-item"><a class="page-link" href="#">2</a></li>
-                    <li class="page-item"><a class="page-link" href="#">3</a></li>
-                    <li class="page-item"><a class="page-link" href="#">4</a></li>
-                    <li class="page-item"><a class="page-link" href="#">5</a></li>
+                    <li ng-repeat="pa in codePagination"
+                        class="page-item {{paginnationAC === pa ? 'active': ''}}"
+                        ng-click="codePaginationChange(pa, this)">
+                        <a class="page-link">{{pa}}</a>
+                    </li>
                 </ul>
             </div>
         </div>
