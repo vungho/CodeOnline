@@ -18,7 +18,9 @@ exports.createNewUser = function (user, callBack) {
         TableName: DBConfig.Tables.User.Name,
         Item: user
     };
-    docClient.put(params, callBack(error, data));
+    docClient.put(params,function (error,data){
+        callBack(error,data);
+    });
 };
 
 /**
