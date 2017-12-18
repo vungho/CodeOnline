@@ -2,11 +2,21 @@ const express = require('express');
 const fs = require('fs');
 const router = express.Router();
 const userService = require('../modules/dynamoDB/UserServices');
+const cCompiler = require('../modules/C_Compiling')
 
 var jwt    = require('jsonwebtoken');
 
 router.get('/', (req, res)=>{
     res.json({'mess': 'welcome api'});
+});
+
+router.post('/codecompiling', (req, res) => {
+    let iCode = req.body;
+    console.log(iCode)
+    cCompiler.codeCompiling(iCode.sourceCode, iCode.inputs, function (data) {
+        console.log(data);
+        res.json(data);
+    })
 });
 
 router.post('/register', (req, res) => {

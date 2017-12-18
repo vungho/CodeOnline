@@ -30,7 +30,7 @@ exports.codeCompiling = function(sourceCode, inputs, callback) {
          return;
     }
     callback("compiler error");
-}
+};
 
 function writeSourceToFile(sourceCode) {
     console.log("in writeSourceToFile Method");

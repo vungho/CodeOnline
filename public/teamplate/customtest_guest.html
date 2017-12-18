@@ -1,42 +1,46 @@
 <div class="section section-basic" ng-controller="CustomTestCtrl">
     <div class="container">
-        <div class="row">
-            <div class="col-md-6 ">
-                <p class="category">Yor code </p>
+        <form>
+            <div class="row">
+                <div class="col-md-6 ">
+                    <p class="category">Yor code </p>
 
-                <div class="code-border">
+                    <div class="code-border">
                     <textarea class="form-control"
                               placeholder="Here can be your nice code"
-                              rows="20">
-
+                              rows="20"
+                              ng-model="iCode.sourceCode">
                     </textarea>
+                    </div>
                 </div>
-            </div>
 
-            <div class="col-md-6">
-                <p class="category">Your input </p>
-                <div class="code-border">
+                <div class="col-md-6">
+                    <p class="category">Your input </p>
+                    <div class="code-border">
                     <textarea class="form-control"
                               placeholder="Input..."
-                              rows="8">
+                              rows="8"
+                              ng-model="iCode.inputs">
 
                     </textarea>
-                </div>
+                    </div>
 
-                <p class="category">Yor output </p>
-                <div class="code-border">
+                    <p class="category">Yor output </p>
+                    <div class="code-border">
                     <textarea class="form-control "
                               placeholder="Output..."
-                              rows="10"></textarea>
-                    </textarea>
-                </div>
+                              rows="10"
+                              ng-model="iCodeOutput"></textarea>
+                        </textarea>
+                    </div>
 
+                </div>
             </div>
-        </div>
-        <div class="row justify-content-center">
-            <button class="btn btn-info">Submit</button>
-            <button class="btn btn-success">Save</button>
-        </div>
+            <div class="row justify-content-center">
+                <button class="btn btn-info" ng-click="codeCompiling()">Submit</button>
+                <button class="btn btn-success">Save</button>
+            </div>
+        </form>
     </div>
 </div>
 
