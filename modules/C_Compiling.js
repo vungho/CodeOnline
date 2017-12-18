@@ -72,7 +72,7 @@ function writeInput(run, inputs) {
     for (var i = 0; i < inputs.length; ++i)
         run.stdin.write(inputs[i]);
     run.stdin.end();
-    run.stdin.remove()
+
 }
 
 function getResult(run, callback) {
