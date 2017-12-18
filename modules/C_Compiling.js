@@ -1,11 +1,14 @@
 var child = require('child_process');
 var spawn = require('child_process').spawn;
+var fs = require('fs');
 /* GET home page. */
 var fileNameDefault = 'a.cpp';
 var fileNameOutDefault = 'a.exe';
+var fileNameOutDefaultNew = 'b.exe';
 var defaultPath = './';
 var defaultFilePath = defaultPath + fileNameDefault;
 var defaultOutFilePath = defaultPath + fileNameOutDefault;
+var defaultOutFilePathNew = defaultPath + fileNameOutDefaultNew;
 var compilerCPlus = 'g++';
 
 
@@ -17,17 +20,16 @@ var compilerCPlus = 'g++';
  * @return return compiler error if cant compile and return value when successful compiling.
  * @update Will update asynctask
  */
-exports.codeCompiling = function(sourceCode, inputs, callback) {
+exports.codeCompiling = function (sourceCode, inputs, callback) {
     console.log("in Code Compiling Method");
     var sourceLocation = writeSourceToFile(sourceCode);
     var compiler = compileFileSource(sourceLocation);
-
-    if (compiler !=='compiler error') {
+    if (compiler.status === 0) {
         console.log("compiled successful");
-         runCode(compiler, inputs, function (data) {
-             callback(data);
-         });
-         return;
+        runCode(compiler, inputs, function (data) {
+            callback(data);
+        });
+        return;
     }
     callback("compiler error");
 };
@@ -35,20 +37,15 @@ exports.codeCompiling = function(sourceCode, inputs, callback) {
 function writeSourceToFile(sourceCode) {
     console.log("in writeSourceToFile Method");
     var fs = require('fs');
-    try {
-        fs.writeFileSync(defaultFilePath, sourceCode, 'utf-8');
-        return defaultFilePath;
-    }catch (err){
-        console.log('Write File Error' + err.message);
-        throw err;
-    }
+    fs.writeFileSync(defaultFilePath, sourceCode, 'utf-8');
+    return defaultFilePath;
 }
 
 function compileFileSource(sourceLocation) {
     console.log("in compileFileSource Method");
     try {
         return child.spawnSync(compilerCPlus, [sourceLocation]);
-    }catch (err){
+    } catch (err) {
         console.log(err.message);
         return 'compiler error';
     }
@@ -75,20 +72,34 @@ function writeInput(run, inputs) {
     for (var i = 0; i < inputs.length; ++i)
         run.stdin.write(inputs[i]);
     run.stdin.end();
+    run.stdin.remove()
 }
 
-function getResult(run,callback) {
+function getResult(run, callback) {
     console.log("in getResult Method");
     run.stderr.on('data', function (output) {
-        if (output !== ''){
+        if (output !== '') {
             console.log("Has error When get Result");
             callback(String(output));
         }
     });
     run.stdout.on('data', function (output) {
         console.log("get Result");
+        if (fs.existsSync(defaultFilePath)) {
+            fs.unlink(defaultFilePath, (err) => {
+                if (err) throw err;
+                console.log('successfully deleted');
+            });
+        }
+        if (fs.existsSync(defaultOutFilePath)) {
+            fs.rename(defaultOutFilePath,defaultOutFilePathNew , (err) => {
+                if (err) console.log(err);
+                else console.log('successfully deleted');
+            });
+        }
         console.log(String(output));
         callback(String(output));
     });
+
 }
 
