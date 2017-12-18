@@ -1,4 +1,4 @@
-CodeOnlineApp.controller('AuthenticationCtrl', function ($scope, $http, AuthenticationService) {
+CodeOnlineApp.controller('AuthenticationCtrl', function ($scope, $http, AuthenticationService, $localStorage) {
     $scope.newUser = new User('', '', '', '');
     $scope.member = new Member('', '');
 
@@ -12,13 +12,16 @@ CodeOnlineApp.controller('AuthenticationCtrl', function ($scope, $http, Authenti
             data: $scope.member
         }).then(
             function (response) {
-                console.log(response)
+                $localStorage.currentUser = response.data;
+                window.location = '/member';
             },
             function (error) {
                 console.log(error);
             }
         );
     }
+    
+
 
     function register() {
         $http({
@@ -46,9 +49,7 @@ CodeOnlineApp.controller('AuthenticationCtrl', function ($scope, $http, Authenti
             }
         );
     }
-
-
-
+    
     function User(userName, email, password, rePassword) {
         this.UserName = userName;
         this.Email = email;

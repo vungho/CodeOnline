@@ -1,4 +1,3 @@
-CodeOnlineApp.controller('CustomTestCtrl', function ($scope ) {
-
+CodeOnlineApp.controller('CustomTestCtrl', function ($scope, $localStorage) {
 
 });
