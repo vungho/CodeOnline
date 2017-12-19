@@ -53,7 +53,7 @@ CodeOnlineApp.controller('CustomTestCtrl', function ($scope, $http, $localStorag
             }).then(
                 function (response) {
                     console.log(response)
-                    $scope.iCodeOutput = response.data
+                    $scope.iCodeOutput = response.data.output;
                 },
                 function (error) {
                     console.log(error)
@@ -68,7 +68,11 @@ CodeOnlineApp.controller('CustomTestCtrl', function ($scope, $http, $localStorag
             //Create
             $('#modal-saveCode').modal('hide');
             $scope.fileName = '';
+
             let code = new SourceCode(null, fileName, $scope.iCode, 'C/C++');
+            if (code.Content.inputs.length < 1){
+                code.Content.inputs = 'empty';
+            }
 
             $http({
                 method: 'post',
@@ -87,7 +91,7 @@ CodeOnlineApp.controller('CustomTestCtrl', function ($scope, $http, $localStorag
                             type: "error"
                         });
                     }else if (result.data){
-                        codePaginationChange($scope.paginnationAC)
+                        codePaginationChange($scope.paginnationAC);
                         swal({
                             title: "Thành công!",
                             text: "Lưu code thành công",
@@ -124,6 +128,7 @@ CodeOnlineApp.controller('CustomTestCtrl', function ($scope, $http, $localStorag
                 }
             }).then(
                 function (response) {
+                    console.log(response)
                     let result = response.data;
                     if (result.error || (result.error === null && result.data === null)){
                         swal({
@@ -204,6 +209,10 @@ CodeOnlineApp.controller('CustomTestCtrl', function ($scope, $http, $localStorag
                                 S: tmp.sourceCode
                             }
                         }
+                    }
+
+                    if (codes[i].Content['M'].inputs.S === 'empty'){
+                        codes[i].Content['M'].inputs.S = '';
                     }
                 }
             },

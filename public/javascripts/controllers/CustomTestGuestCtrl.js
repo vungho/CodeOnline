@@ -19,7 +19,7 @@ CodeOnlineApp.controller('CustomTestCtrl', function ($scope, $http, $localStorag
             }).then(
                 function (response) {
                     console.log(response)
-                    $scope.iCodeOutput = response.data
+                    $scope.iCodeOutput = response.data.output;
                 },
                 function (error) {
                     console.log(error)

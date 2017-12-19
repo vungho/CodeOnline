@@ -25,7 +25,7 @@ exports.createNewSourceFile = function (userName, fileName, content, language, c
         Item: sourceCode
     };
     docClient.put(params, function(error, data){
-        callBack(error, data);
+        callBack(error,data);
     });
 };
 
@@ -41,23 +41,27 @@ exports.updateSourceFile = function (userName, fileName, sourceCodeContent, call
     var dynamoDB = new AWS.DynamoDB();
     var params = {
         ExpressionAttributeNames :{
-            "#C" : [DBConfig.Tables.SourceCode.KeySchema.Columns.Content.ColumnName].toString()
+            "#C" : [DBConfig.Tables.SourceCode.KeySchema.Columns.Content.ColumnName].toString(),
+            "#LUD" : [DBConfig.Tables.SourceCode.KeySchema.Columns.LastUpdated.ColumnName].toString()
         },
         ExpressionAttributeValues :{
             ":newC" : {
                 [DBConfig.Tables.SourceCode.KeySchema.Columns.Content.Type] : JSON.stringify(sourceCodeContent)
+            },
+            ":UD" :{
+                [DBConfig.Tables.SourceCode.KeySchema.Columns.LastUpdated.Type] : Date.now().toString()
             }
         },
         Key :{
-          [DBConfig.Tables.SourceCode.KeySchema.PartitionKey.ColumnName] : {
-              [DBConfig.Tables.SourceCode.KeySchema.Columns.UserName.Type] : userName
-          },
-          [DBConfig.Tables.SourceCode.KeySchema.SortKey.ColumnName] : {
-              [DBConfig.Tables.SourceCode.KeySchema.Columns.FileName.Type] : fileName
-          }
+            [DBConfig.Tables.SourceCode.KeySchema.PartitionKey.ColumnName] : {
+                [DBConfig.Tables.SourceCode.KeySchema.Columns.UserName.Type] : userName
+            },
+            [DBConfig.Tables.SourceCode.KeySchema.SortKey.ColumnName] : {
+                [DBConfig.Tables.SourceCode.KeySchema.Columns.FileName.Type] : fileName
+            }
         },
         TableName: DBConfig.Tables.SourceCode.Name,
-        UpdateExpression : "SET #C = :newC"
+        UpdateExpression : "SET #C = :newC, #LUD = :UD "
     };
     dynamoDB.updateItem(params, function(error,data){
         callBack(error, data);
@@ -173,7 +177,7 @@ exports.getUserSourceCodesPageList = function ( pageSize, startKey, userName,cal
             ProjectionExpression: "UserName, FileName, Content, #LG, DateCreated, LastUpdated"
         };
     };
-    dynamoDb.query(params, function (error, data) {
+    dynamoDb.query(params,function (error, data) {
         callBack(error,data);
     });
 };

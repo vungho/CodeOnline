@@ -3,7 +3,9 @@ const fs = require('fs');
 const router = express.Router();
 const userService = require('../modules/dynamoDB/UserServices');
 const cCompiler = require('../modules/C_Compiling');
-const sourceCode = require('../modules/dynamoDB/SourceCodeServices')
+const sourceCode = require('../modules/dynamoDB/SourceCodeServices');
+const http = require('http');
+const request = require('request');
 
 var jwt    = require('jsonwebtoken');
 
@@ -71,13 +73,38 @@ router.put('/savecode', (req, res) => {
     }
 });
 
-router.post('/codecompiling', (req, res) => {
+// router.post('/codecompiling', (req, res) => {
+//     let iCode = req.body;
+//     console.log(iCode)
+//     cCompiler.codeCompiling(iCode.sourceCode, iCode.inputs, function (data) {
+//         console.log(data);
+//         res.json(data);
+//     })
+// });
+
+router.post('/codecompiling', (req, mainRes) => {
     let iCode = req.body;
     console.log(iCode)
-    cCompiler.codeCompiling(iCode.sourceCode, iCode.inputs, function (data) {
-        console.log(data);
-        res.json(data);
-    })
+
+    var program = {
+        script : iCode.sourceCode,
+        stdin : iCode.inputs,
+        language: "cpp",
+        versionIndex: "0",
+        clientId: "7882eb43f1fa1034b8b900eceecf57fc",
+        clientSecret:"5484c92255c06efaeffd137889cade2602f6eaebb9766c81e79a05d07cf2c703"
+    };
+    request({
+            url: 'https://api.jdoodle.com/execute',
+            method: "POST",
+            json: program
+        },
+        function (error, response, body) {
+            console.log('error:', error);
+            console.log('statusCode:', response && response.statusCode);
+            console.log('body:', body);
+            mainRes.json(body);
+        });
 });
 
 router.get('/usercode/:limit/:filename', (req, res) => {
@@ -127,8 +154,6 @@ router.get('/usercode/:limit/:filename', (req, res) => {
         res.json(result)
     }
 });
-
-
 
 router.post('/register', (req, res) => {
     let user = req.body;
