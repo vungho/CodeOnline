@@ -85,6 +85,7 @@ CodeOnlineApp.controller('CustomTestCtrl', function ($scope, $http, $localStorag
                             type: "error"
                         });
                     }else if (result.data){
+                        codePaginationChange($scope.paginnationAC)
                         swal({
                             title: "Thành công!",
                             text: "Lưu code thành công",
@@ -112,7 +113,10 @@ CodeOnlineApp.controller('CustomTestCtrl', function ($scope, $http, $localStorag
             $http({
                 method: 'put',
                 url: '/api/savecode',
-                data: $scope.sourceCodeSelected,
+                data: {
+                    code: $scope.iCode,
+                    fileName: $scope.sourceCodeSelected.FileName.S
+                },
                 headers: {
                     Authorization: $localStorage.currentUser.token
                 }
@@ -126,6 +130,7 @@ CodeOnlineApp.controller('CustomTestCtrl', function ($scope, $http, $localStorag
                             type: "error"
                         });
                     }else if (result.data){
+                        codePaginationChange($scope.paginnationAC);
                         swal({
                             title: "Thành công!",
                             text: "Cập nhật code thành công",
@@ -188,9 +193,16 @@ CodeOnlineApp.controller('CustomTestCtrl', function ($scope, $http, $localStorag
                     codes[i]['LastUpdated']['Plan'] = new Date(parseInt(codes[i]['LastUpdated']['S']));
 
                     if (typeof codes[i].Content.S === 'string'){
-                        codes[i].Content.S = JSON.parse(codes[i].Content.S);
+                        let tmp = JSON.parse(codes[i].Content.S);
+                        codes[i].Content['M'] = {
+                            inputs: {
+                                S: tmp.inputs
+                            },
+                            sourceCode: {
+                                S: tmp.sourceCode
+                            }
+                        }
                     }
-
                 }
             },
             function (error) {

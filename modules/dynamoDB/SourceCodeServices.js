@@ -45,7 +45,7 @@ exports.updateSourceFile = function (userName, fileName, sourceCodeContent, call
         },
         ExpressionAttributeValues :{
             ":newC" : {
-                [DBConfig.Tables.SourceCode.KeySchema.Columns.Content.Type] : sourceCodeContent
+                [DBConfig.Tables.SourceCode.KeySchema.Columns.Content.Type] : JSON.stringify(sourceCodeContent)
             }
         },
         Key :{

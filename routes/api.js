@@ -51,7 +51,13 @@ router.put('/savecode', (req, res) => {
         jwt.verify(token, 'jsonwebtoken', function(err, decoded) {
             req.decoded = decoded;
             let body = req.body;
-            sourceCode.updateSourceFile(decoded.UserName, body.FileName.S, JSON.stringify(body.Content), function (error, data) {
+            console.log(body)
+            let codeContent = {
+                sourceCode: body.code.sourceCode,
+                inputs: body.code.inputs
+            };
+            console.log(codeContent)
+            sourceCode.updateSourceFile(decoded.UserName, body.fileName, codeContent, function (error, data) {
                 if (error){
                     result.error = error;
                 }else{
