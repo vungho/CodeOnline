@@ -25,7 +25,7 @@ exports.createNewSourceFile = function (userName, fileName, content, language, c
         Item: sourceCode
     };
     docClient.put(params, function(error, data){
-        callBack(error,data);
+        callBack(error, data);
     });
 };
 

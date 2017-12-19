@@ -13,6 +13,7 @@ CodeOnlineApp.controller('AuthenticationCtrl', function ($scope, $http, Authenti
         }).then(
             function (response) {
                 $localStorage.currentUser = response.data;
+                console.log($localStorage.currentUser)
                 window.location = '/member';
             },
             function (error) {

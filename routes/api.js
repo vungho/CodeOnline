@@ -2,13 +2,45 @@ const express = require('express');
 const fs = require('fs');
 const router = express.Router();
 const userService = require('../modules/dynamoDB/UserServices');
-const cCompiler = require('../modules/C_Compiling')
+const cCompiler = require('../modules/C_Compiling');
+const sourceCode = require('../modules/dynamoDB/SourceCodeServices')
 
 var jwt    = require('jsonwebtoken');
 
 router.get('/', (req, res)=>{
     res.json({'mess': 'welcome api'});
 });
+
+router.post('/savecode', (req, res) => {
+    var token = req.headers.authorization;
+    console.log(token)
+    if (token) {
+        jwt.verify(token, 'jsonwebtoken', function(err, decoded) {
+            req.decoded = decoded;
+            let code = req.body;
+
+            sourceCode.createNewSourceFile(decoded.UserName, code.FileName, code.Content, code.Language,
+                function (error, data) {
+                    let result = {
+                        error: null,
+                        data: null
+                    };
+                    if (error){
+                        result.error = error;
+                    }else{
+                        result.data = data
+                    }
+                    res.json(result);
+                })
+        });
+    } else {
+        res.json({
+            error: null,
+            data: null
+        })
+    }
+});
+
 
 router.post('/codecompiling', (req, res) => {
     let iCode = req.body;
@@ -70,6 +102,7 @@ router.post('/login', (req, res) => {
 
 router.route('/info').get(function (req, res) {
     var token = req.headers.authorization;
+    console.log(token)
     if (token) {
         jwt.verify(token, 'jsonwebtoken', function(err, decoded) {
             req.decoded = decoded;

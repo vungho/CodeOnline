@@ -8,6 +8,7 @@ CodeOnlineApp.controller('CustomTestCtrl', function ($scope, $http, $localStorag
     init();
     
     function init() {
+        console.log($localStorage.currentUser)
         if (!$localStorage.currentUser){
             window.location = '/guest';
         }else{
@@ -20,7 +21,9 @@ CodeOnlineApp.controller('CustomTestCtrl', function ($scope, $http, $localStorag
             }).then(
                 function (response) {
                     $scope.user = response.data;
+                    console.log($scope.user)
                     delete $scope.user.Password;
+
                     //getListSourceCode();
                 },
                 function (error) {
@@ -83,17 +86,37 @@ CodeOnlineApp.controller('CustomTestCtrl', function ($scope, $http, $localStorag
 
 
         let code = new SourceCode(null, fileName, $scope.iCode, 'C/C++');
-        console.log(code)
+        console.log(code);
         $http({
             method: 'post',
             url: '/api/savecode',
-            data: code
+            data: code,
+            headers: {
+                Authorization: $localStorage.currentUser.token
+            }
         }).then(
             function (response) {
-                console.log(response)
+                let result = response.data;
+                if (result.error || (result.error == null && result.data == null)){
+                    swal({
+                        title: "Thất bại!",
+                        text: "Lưu code thất  bại, vui lòng kiểm tra lại các thông tin!",
+                        type: "error"
+                    });
+                }else if (result.data){
+                    swal({
+                        title: "Thành công!",
+                        text: "Lưu code thành công",
+                        type: "success"
+                    });
+                }
             },
             function (error) {
-                console.log(error)
+                swal({
+                    title: "Thất bại!",
+                    text: "Lưu code thất  bại, vui lòng kiểm tra lại các thông tin!",
+                    type: "error"
+                });
             }
         )
     }
