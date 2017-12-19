@@ -1,5 +1,11 @@
 CodeOnlineApp.controller('CustomTestCtrl', function ($scope, $http, $localStorage) {
 
+    function init() {
+        if ($localStorage.currentUser){
+            window.location = '/member';
+        }
+    }
+
     $scope.iCode = new Code('', '');
     $scope.iCodeOutput = '';
     $scope.codeCompiling = codeCompiling;
@@ -12,15 +18,16 @@ CodeOnlineApp.controller('CustomTestCtrl', function ($scope, $http, $localStorag
                 data: JSON.stringify(iCode)
             }).then(
                 function (response) {
+                    console.log(response)
                     $scope.iCodeOutput = response.data
                 },
                 function (error) {
+                    console.log(error)
                     $scope.iCodeOutput = 'Error'
                 }
             )
         }
     }
-
 
     function Code(source, input) {
         this.sourceCode = source;

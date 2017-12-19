@@ -52,9 +52,11 @@ CodeOnlineApp.controller('CustomTestCtrl', function ($scope, $http, $localStorag
                 data: JSON.stringify(iCode)
             }).then(
                 function (response) {
+                    console.log(response)
                     $scope.iCodeOutput = response.data
                 },
                 function (error) {
+                    console.log(error)
                     $scope.iCodeOutput = 'Error'
                 }
             )
