@@ -41,6 +41,29 @@ router.post('/savecode', (req, res) => {
     }
 });
 
+router.put('/savecode', (req, res) => {
+    let result = {
+        error: null,
+        data: null
+    };
+    var token = req.headers.authorization;
+    if (token) {
+        jwt.verify(token, 'jsonwebtoken', function(err, decoded) {
+            req.decoded = decoded;
+            let body = req.body;
+            sourceCode.updateSourceFile(decoded.UserName, body.FileName.S, JSON.stringify(body.Content), function (error, data) {
+                if (error){
+                    result.error = error;
+                }else{
+                    result.data = data
+                }
+                res.json(result);
+            })
+        });
+    } else {
+        res.json(result)
+    }
+});
 
 router.post('/codecompiling', (req, res) => {
     let iCode = req.body;
@@ -51,9 +74,55 @@ router.post('/codecompiling', (req, res) => {
     })
 });
 
-router.get('/usercode/:userName/:limit/:offset', (req, res) => {
-    res.json({wee: ':(('});
+router.get('/usercode/:limit/:filename', (req, res) => {
+    let result = {
+        error: null,
+        data: null
+    };
+
+    var token = req.headers.authorization;
+    if (token) {
+        jwt.verify(token, 'jsonwebtoken', function(err, decoded) {
+            req.decoded = decoded;
+            let params = req.params;
+            console.log(decoded)
+            console.log(params);
+
+            if ( params['filename'] && params['limit']){
+                let filename = params['filename'];
+                let limit = params['limit'];
+
+                if (filename === -1){
+                    sourceCode.getUserSourceCodesPageList(limit, null, decoded.UserName, function (error, data) {
+                        if (error){
+                            result.error = error
+                        }else{
+                            result.data = data;
+                        }
+                        res.json(result);
+                    })
+                }else{
+                    let startKey = {
+                        UserName: decoded.UserName,
+                        FileName: filename
+                    };
+                    sourceCode.getUserSourceCodesPageList(limit, startKey, decoded.UserName, function (error, data) {
+                        if (error){
+                            result.error = error
+                        }else{
+                            result.data = data;
+                        }
+                        res.json(result);
+                    })
+                }
+            }
+        });
+    } else {
+        res.json(result)
+    }
 });
+
+
 
 router.post('/register', (req, res) => {
     let user = req.body;

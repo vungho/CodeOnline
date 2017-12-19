@@ -173,7 +173,7 @@ exports.getUserSourceCodesPageList = function ( pageSize, startKey, userName,cal
             ProjectionExpression: "UserName, FileName, Content, #LG, DateCreated, LastUpdated"
         };
     };
-    dynamoDb.query(params,function (error, data) {
+    dynamoDb.query(params, function (error, data) {
         callBack(error,data);
     });
 };

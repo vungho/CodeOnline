@@ -8,7 +8,6 @@ CodeOnlineApp.controller('CustomTestCtrl', function ($scope, $http, $localStorag
     init();
     
     function init() {
-        console.log($localStorage.currentUser)
         if (!$localStorage.currentUser){
             window.location = '/guest';
         }else{
@@ -21,10 +20,8 @@ CodeOnlineApp.controller('CustomTestCtrl', function ($scope, $http, $localStorag
             }).then(
                 function (response) {
                     $scope.user = response.data;
-                    console.log($scope.user)
                     delete $scope.user.Password;
-
-                    //getListSourceCode();
+                    codePaginationChange(1);
                 },
                 function (error) {
                     $scope.user = null;
@@ -33,33 +30,19 @@ CodeOnlineApp.controller('CustomTestCtrl', function ($scope, $http, $localStorag
         }
     }
 
-    function getListSourceCode(){
-        $http({
-            method: 'get',
-            url: '/api/usercode',
-            data: {
-                limit: 10,
-                startKey: null
-            }
-        }).then(
-            function (response) {
-                console.log(response)
-            },
-            function (error) {
-                console.log(error)
-            }
-        )
-    }
-
     // ----> Authentication redirect
 
     // -- > Feature code
     $scope.iCode = new Code('', '');
     $scope.iCodeOutput = '';
+    $scope.sourceCodeSelected = null;
     $scope.codeCompiling = codeCompiling;
     $scope.saveCode = saveCode;
+    $scope.saveCodeBtnClick = saveCodeBtnClick;
     $scope.codePaginationChange = codePaginationChange;
-    
+    $scope.sourceCodeSelectedChange = sourceCodeSelectedChange;
+    $scope.refreshCode = refreshCode;
+
     function codeCompiling() {
         let iCode = Object.assign({}, $scope.iCode);
         if (iCode.sourceCode){
@@ -79,49 +62,89 @@ CodeOnlineApp.controller('CustomTestCtrl', function ($scope, $http, $localStorag
     }
     
     function saveCode(fileName) {
-        console.log(fileName);
-        console.log($scope.user);
-        $('#modal-saveCode').modal('hide');
-        $scope.fileName = '';
+        if ($scope.sourceCodeSelected === null){
+            //Create
+            $('#modal-saveCode').modal('hide');
+            $scope.fileName = '';
+            let code = new SourceCode(null, fileName, $scope.iCode, 'C/C++');
 
-
-        let code = new SourceCode(null, fileName, $scope.iCode, 'C/C++');
-        console.log(code);
-        $http({
-            method: 'post',
-            url: '/api/savecode',
-            data: code,
-            headers: {
-                Authorization: $localStorage.currentUser.token
-            }
-        }).then(
-            function (response) {
-                let result = response.data;
-                if (result.error || (result.error == null && result.data == null)){
+            $http({
+                method: 'post',
+                url: '/api/savecode',
+                data: code,
+                headers: {
+                    Authorization: $localStorage.currentUser.token
+                }
+            }).then(
+                function (response) {
+                    let result = response.data;
+                    if (result.error || (result.error == null && result.data == null)){
+                        swal({
+                            title: "Thất bại!",
+                            text: "Lưu code thất  bại, vui lòng kiểm tra lại các thông tin!",
+                            type: "error"
+                        });
+                    }else if (result.data){
+                        swal({
+                            title: "Thành công!",
+                            text: "Lưu code thành công",
+                            type: "success"
+                        });
+                    }
+                },
+                function (error) {
                     swal({
                         title: "Thất bại!",
                         text: "Lưu code thất  bại, vui lòng kiểm tra lại các thông tin!",
                         type: "error"
                     });
-                }else if (result.data){
+                }
+            )
+        }
+    }
+
+    function saveCodeBtnClick() {
+        if ($scope.sourceCodeSelected === null){
+            //Create
+            $('#modal-saveCode').modal('show');
+        }else{
+            //Update
+            $http({
+                method: 'put',
+                url: '/api/savecode',
+                data: $scope.sourceCodeSelected,
+                headers: {
+                    Authorization: $localStorage.currentUser.token
+                }
+            }).then(
+                function (response) {
+                    let result = response.data;
+                    if (result.error || (result.error === null && result.data === null)){
+                        swal({
+                            title: "Thất bại!",
+                            text: "Cập nhật code thất  bại, vui lòng kiểm tra lại các thông tin!",
+                            type: "error"
+                        });
+                    }else if (result.data){
+                        swal({
+                            title: "Thành công!",
+                            text: "Cập nhật code thành công",
+                            type: "success"
+                        });
+                    }
+                },
+                function (error) {
                     swal({
-                        title: "Thành công!",
-                        text: "Lưu code thành công",
-                        type: "success"
+                        title: "Thất bại!",
+                        text: "Cập nhật code thất  bại, vui lòng kiểm tra lại các thông tin!",
+                        type: "error"
                     });
                 }
-            },
-            function (error) {
-                swal({
-                    title: "Thất bại!",
-                    text: "Lưu code thất  bại, vui lòng kiểm tra lại các thông tin!",
-                    type: "error"
-                });
-            }
-        )
+            )
+        }
     }
-    
-    function codePaginationChange(pa, instance) {
+
+    function codePaginationChange(pa) {
         let index = $scope.codePagination.indexOf(pa);
         if (index === 4){
             for (let i=0; i<$scope.codePagination.length; i++){
@@ -134,17 +157,61 @@ CodeOnlineApp.controller('CustomTestCtrl', function ($scope, $http, $localStorag
         }
         $scope.paginnationAC = pa;
         //Load code with pa
+        let startKeyFileName = -1;
+
+        if (pa !== 1){
+            let tmp = $scope.listSourceCode[$scope.listSourceCode.length-1];
+            console.log(tmp);
+            startKeyFileName = tmp.FileName.S;
+        }
+
         $http({
             method: 'get',
-            url: '/api/usercode/' +$scope.user + '/10/' + ((pa-1)*10)
+            url: '/api/usercode/' + '10/' + startKeyFileName,
+            headers: {
+                Authorization: $localStorage.currentUser.token
+            }
         }).then(
             function (response) {
-                console.log(response)
+                console.log(response);
+                let data = response.data;
+                if(!data.error){
+                    $scope.listSourceCode = data.data.Items;
+                }else{
+                    $scope.listSourceCode = [];
+                }
+
+                //Ngay gio
+                let codes = $scope.listSourceCode;
+                for (let i=0; i<codes.length; i++){
+                    codes[i]['DateCreated']['Plan'] = new Date(parseInt(codes[i]['DateCreated']['S']));
+                    codes[i]['LastUpdated']['Plan'] = new Date(parseInt(codes[i]['LastUpdated']['S']));
+
+                    if (typeof codes[i].Content.S === 'string'){
+                        codes[i].Content.S = JSON.parse(codes[i].Content.S);
+                    }
+
+                }
             },
             function (error) {
-                console.log(error)
+                $scope.listSourceCode = [];
             }
         )
+    }
+
+    function sourceCodeSelectedChange(code) {
+        console.log(code)
+        $scope.sourceCodeSelected = code;
+        $scope.iCode.sourceCode = code.Content.M.sourceCode.S;
+        $scope.iCode.inputs = code.Content.M.inputs.S;
+        $scope.iCodeOutput = '';
+    }
+
+    function refreshCode() {
+        $scope.sourceCodeSelected = null;
+        $scope.iCode.sourceCode = '';
+        $scope.iCode.inputs = '';
+        $scope.iCodeOutput = '';
     }
 
     function Code(source, input) {
