@@ -290,6 +290,17 @@ CodeOnlineApp.controller('CustomTestCtrl', function ($scope, $http, $localStorag
         $scope.iCode.sourceCode = code.Content.M.sourceCode.S;
         $scope.iCode.inputs = code.Content.M.inputs.S;
         $scope.iCodeOutput = '';
+
+        //Mapping language
+        let las = $scope.listLanguage;
+        let currentLa = code.Language.S;
+
+        for (let i=0; i<las.length; i++){
+            if (las[i].name.localeCompare(currentLa) === 0){
+                $scope.complierLanguage = las[i].signname;
+                break;
+            }
+        }
     }
 
     function refreshCode() {
