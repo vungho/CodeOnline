@@ -1,5 +1,20 @@
 <div class="section section-basic" ng-controller="CustomTestCtrl">
     <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="hljs-link_label">Language</label>
+                    <select class="form-control"
+                            ng-model="complierLanguage"
+                    >
+                        <option ng-repeat="la in listLanguage track by $index"
+                                value="{{la.signname}}">
+                            {{la.name}}
+                        </option>
+                    </select>
+                </div>
+            </div>
+        </div>
         <form>
             <div class="row">
                 <div class="col-md-6 ">

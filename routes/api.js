@@ -89,7 +89,7 @@ router.post('/codecompiling', (req, mainRes) => {
     var program = {
         script : iCode.sourceCode,
         stdin : iCode.inputs,
-        language: "cpp",
+        language: iCode.complierLanguage ? iCode.complierLanguage : 'cpp',
         versionIndex: "0",
         clientId: "7882eb43f1fa1034b8b900eceecf57fc",
         clientSecret:"5484c92255c06efaeffd137889cade2602f6eaebb9766c81e79a05d07cf2c703"

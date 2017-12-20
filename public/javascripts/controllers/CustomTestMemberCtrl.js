@@ -5,6 +5,53 @@ CodeOnlineApp.controller('CustomTestCtrl', function ($scope, $http, $localStorag
     $scope.codePagination = [1, 2, 3, 4, 5];
     $scope.paginnationAC = 1;
     $scope.listSourceCode = [];
+    $scope.listLanguage = [
+        {
+            signname: 'cpp',
+            name: 'C++'
+        },
+        {
+            signname: 'java',
+            name: 'Java'
+        },
+        {
+            signname: 'c',
+            name: 'C'
+        },
+        {
+            signname: 'php',
+            name: 'PHP'
+        },
+        {
+            signname: 'perl',
+            name: 'Perl'
+        },
+        {
+            signname: 'ruby',
+            name: 'Ruby'
+        },
+        {
+            signname: 'go',
+            name: 'GO Lang'
+        },
+        {
+            signname: 'csharp',
+            name: 'C#'
+        },
+        {
+            signname: 'swift',
+            name: 'Swift'
+        },
+        {
+            signname: 'nodejs',
+            name: 'NodeJS'
+        },
+        {
+            signname: 'kotlin',
+            name: 'Kotlin'
+        }
+    ];
+    $scope.complierLanguage = 'cpp';
     init();
     
     function init() {
@@ -45,6 +92,7 @@ CodeOnlineApp.controller('CustomTestCtrl', function ($scope, $http, $localStorag
 
     function codeCompiling() {
         let iCode = Object.assign({}, $scope.iCode);
+        iCode['complierLanguage'] = $scope.complierLanguage;
         if (iCode.sourceCode){
             $http({
                 method: 'post',
@@ -62,6 +110,18 @@ CodeOnlineApp.controller('CustomTestCtrl', function ($scope, $http, $localStorag
             )
         }
     }
+    function fileNameComplierLanguage() {
+        let name = 'C++';
+        let laId = $scope.complierLanguage;
+        let las = $scope.listLanguage;
+        for (let i=0; i<las.length; i++){
+            if(las[i].signname === laId){
+                name = las[i].name;
+                break;
+            }
+        }
+        return name;
+    }
     
     function saveCode(fileName) {
         if ($scope.sourceCodeSelected === null){
@@ -69,7 +129,9 @@ CodeOnlineApp.controller('CustomTestCtrl', function ($scope, $http, $localStorag
             $('#modal-saveCode').modal('hide');
             $scope.fileName = '';
 
-            let code = new SourceCode(null, fileName, $scope.iCode, 'C/C++');
+
+
+            let code = new SourceCode(null, fileName, $scope.iCode, fileNameComplierLanguage());
             if (code.Content.inputs.length < 1){
                 code.Content.inputs = 'empty';
             }

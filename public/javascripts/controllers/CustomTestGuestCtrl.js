@@ -8,9 +8,57 @@ CodeOnlineApp.controller('CustomTestCtrl', function ($scope, $http, $localStorag
 
     $scope.iCode = new Code('', '');
     $scope.iCodeOutput = '';
+    $scope.listLanguage = [
+        {
+            signname: 'cpp',
+            name: 'C++'
+        },
+        {
+            signname: 'java',
+            name: 'Java'
+        },
+        {
+            signname: 'c',
+            name: 'C'
+        },
+        {
+            signname: 'php',
+            name: 'PHP'
+        },
+        {
+            signname: 'perl',
+            name: 'Perl'
+        },
+        {
+            signname: 'ruby',
+            name: 'Ruby'
+        },
+        {
+            signname: 'go',
+            name: 'GO Lang'
+        },
+        {
+            signname: 'csharp',
+            name: 'C#'
+        },
+        {
+            signname: 'swift',
+            name: 'Swift'
+        },
+        {
+            signname: 'nodejs',
+            name: 'NodeJS'
+        },
+        {
+            signname: 'kotlin',
+            name: 'Kotlin'
+        }
+    ];
+    $scope.complierLanguage = 'cpp';
     $scope.codeCompiling = codeCompiling;
     function codeCompiling() {
         let iCode = Object.assign({}, $scope.iCode);
+        iCode['complierLanguage'] = $scope.complierLanguage;
         if (iCode.sourceCode){
             $http({
                 method: 'post',
